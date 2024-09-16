@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "npm": "^10.8.3",
+    "studentvue": "^2.0.4",
+    "studentvue.js": "^0.1.1"
+  }
+}
