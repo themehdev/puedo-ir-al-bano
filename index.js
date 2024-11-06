@@ -1,9 +1,18 @@
-(async function () {
+(async () => {
 	const DATABASE_URL =
 		"https://studentvue-sign-out-default-rtdb.firebaseio.com/index";
 	let data;
-	if (window.localStorage.getItem("valid") !== true) {
-		window.location.assign("/noauth.html");
+	const auth =
+		localStorage.getItem("vnjneoijfononsdonsofowiejfondsofnsofsdofijnm") ===
+			"fun" &&
+		localStorage.getItem("sdfokjfnkjnwkeijdcjoisjfijknnskjdfh9o2093urd") ===
+			"untrue" &&
+		localStorage.getItem("kvjkniuu49hj0923uroovojwofi2039ruoxvjohf0r9f") ===
+			"true" &&
+		localStorage.getItem("auth") === "true";
+
+	if (auth !== true) {
+		window.location.replace("./noauth.html");
 		return;
 	}
 
@@ -11,15 +20,20 @@
 		.getElementById("studentForm")
 		.addEventListener("submit", async (e) => {
 			e.preventDefault();
-			data = await fetch(DATABASE_URL).then((response) =>
+			console.log("getting");
+			data = await fetch(DATABASE_URL + ".json").then((response) =>
 				response.json()
 			);
-			const studentID = document.getElementById("studentID").value;
+			console.log("received");
+			const studentID = Number(
+				document.getElementById("studentID").value
+			);
 			for (var i = 0; i < data.length; i++) {
 				if (data[i].ID === studentID) {
 					const dataToSend = {
-						time: new Date(Date.now()).toString(),
+						out: Date.now(),
 					};
+					console.log("found");
 					const reqData = {
 						method: "PUT",
 						body: JSON.stringify(dataToSend),
@@ -28,10 +42,16 @@
 						},
 					};
 					await fetch(
-						DATABASE_URL + "/" + String(i) + "/outs.json",
+						DATABASE_URL +
+							"/" +
+							String(i) +
+							"/outs/" +
+							String(data[i].outs ? data[i].outs.length : 0) +
+							".json",
 						reqData
 					);
-					window.location.assign("/out?dbID=" + i);
+					console.log("sent");
+					window.location.assign("./out.html?dbID=" + i + "&queue=");
 					return;
 				}
 			}
